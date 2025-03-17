@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="template.html"
+      layout:decorate="template"
 >
 <head>
     <meta charset="UTF-8">
@@ -41,7 +41,7 @@
               <td th:text="${p.dateNaissance}"></td>
               <td th:text="${p.malade}"></td>
               <td th:text="${p.score}"></td>
-              <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+              <td>
                 <a onclick="return confirm('Etes vous sûre?')" class="btn btn-danger"
                    th:href="@{/deletePatient(id=${p.id}, keyword=${keyword}, page=${currentPage})}">
                   <i class="bi bi-trash"></i>
