@@ -55,3 +55,44 @@ The objective of this practical work is to develop a JEE web application using S
             <version>3.1.0.M1</version>
         </dependency>
 ```
+### HTML pages:
+#### Template Page:
+In Thymeleaf, a template page serves as a reusable model for multiple pages of the application. It allows centralizing common elements such as the header, menu, footer, and navigation bar to avoid duplicating HTML code in each page.
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head></head>
+<body>
+<!--common elements-->
+<div layout:fragment="content">
+
+</div>
+</body>
+</html>
+```
+#### another page for example: patients.html:
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template"
+>
+<head></head>
+<body>
+  <div layout:fragment="content">
+<!-- the content that will be displayed with the template page-->
+</div>
+</body>
+</html>
+```
+### Demonstration:
+- patients page
+  ![image](https://github.com/user-attachments/assets/9cf96db6-849e-4dec-b33d-4f5d2e60447c)
+- save patient
+  ![image](https://github.com/user-attachments/assets/a59a62f3-1886-4545-8e0e-e179a762ce08)
+- delete patient
+  ![image](https://github.com/user-attachments/assets/60997a64-6c38-4c84-b109-8591097db56f)
+
+
+
