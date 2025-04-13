@@ -7,9 +7,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class SecurityRestController {
+    @GetMapping("/notAuthorized")
+    public String notAuthorized(){
+        return "notAuthorized";
+    }
     @GetMapping("/profile")
     public Authentication authentication() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth;
     }
+
 }

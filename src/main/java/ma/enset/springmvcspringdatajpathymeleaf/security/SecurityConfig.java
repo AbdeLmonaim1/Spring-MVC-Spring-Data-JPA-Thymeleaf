@@ -10,7 +10,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -21,6 +24,11 @@ public class SecurityConfig {
         this.passwordEncoder = passwordEncoder;
     }
     @Bean
+    public JdbcUserDetailsManager userDetailsService(DataSource dataSource) {
+        //il faut specifie le dataSource Oui se trouve les utilisateurs et les roles
+        return new JdbcUserDetailsManager(dataSource);
+    }
+//    @Bean
     public InMemoryUserDetailsManager userDetailsManager() {
         return new InMemoryUserDetailsManager(
                 User.withUsername("Monaim").password(passwordEncoder.encode("monaim123")).roles("USER", "ADMIN").build(),
@@ -30,9 +38,10 @@ public class SecurityConfig {
     }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.formLogin(Customizer.withDefaults());
+        httpSecurity.formLogin(fl -> fl.loginPage("/login").defaultSuccessUrl("/").permitAll());
         httpSecurity.authorizeHttpRequests(ar -> ar.requestMatchers("/user/**").hasRole("USER"));
         httpSecurity.authorizeHttpRequests(ar -> ar.requestMatchers("/admin/**").hasRole("ADMIN"));
+        httpSecurity.authorizeHttpRequests(ar -> ar.requestMatchers("/webjars/**").permitAll());
         httpSecurity.exceptionHandling(ex -> ex.accessDeniedPage("/notAuthorized"));
         httpSecurity.authorizeHttpRequests(ar -> ar.anyRequest().authenticated());
 
