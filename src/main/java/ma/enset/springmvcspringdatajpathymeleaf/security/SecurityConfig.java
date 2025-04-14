@@ -1,6 +1,7 @@
 package ma.enset.springmvcspringdatajpathymeleaf.security;
 
 
+import ma.enset.springmvcspringdatajpathymeleaf.security.service.UserDetailServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -20,10 +21,12 @@ import javax.sql.DataSource;
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     private PasswordEncoder passwordEncoder;
-    public SecurityConfig(PasswordEncoder passwordEncoder) {
+    private UserDetailServiceImpl userDetailServiceImpl;
+    public SecurityConfig(PasswordEncoder passwordEncoder, UserDetailServiceImpl userDetailServiceImpl) {
         this.passwordEncoder = passwordEncoder;
+        this.userDetailServiceImpl = userDetailServiceImpl;
     }
-    @Bean
+//    @Bean
     public JdbcUserDetailsManager userDetailsService(DataSource dataSource) {
         //il faut specifie le dataSource Oui se trouve les utilisateurs et les roles
         return new JdbcUserDetailsManager(dataSource);
@@ -43,6 +46,8 @@ public class SecurityConfig {
         httpSecurity.authorizeHttpRequests(ar -> ar.requestMatchers("/admin/**").hasRole("ADMIN"));
         httpSecurity.authorizeHttpRequests(ar -> ar.requestMatchers("/webjars/**").permitAll());
         httpSecurity.exceptionHandling(ex -> ex.accessDeniedPage("/notAuthorized"));
+        //Ce ligne la c'est pout utiliser la strategie de UserDetailsService
+        httpSecurity.userDetailsService(userDetailServiceImpl);
         httpSecurity.authorizeHttpRequests(ar -> ar.anyRequest().authenticated());
 
         return httpSecurity.build();

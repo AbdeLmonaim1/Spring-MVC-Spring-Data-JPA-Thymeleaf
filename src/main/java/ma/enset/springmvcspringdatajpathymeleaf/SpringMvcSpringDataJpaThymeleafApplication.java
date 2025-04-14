@@ -43,7 +43,6 @@ public class SpringMvcSpringDataJpaThymeleafApplication {
                     .dateNaissance(new Date())
                     .malade(true)
                     .score(11)
-
                     .build());
         };
     }
@@ -66,7 +65,7 @@ public class SpringMvcSpringDataJpaThymeleafApplication {
         };
     }
     //C'est pour teste la 3-ieme strategie UserDetailsService
-    @Bean
+//    @Bean
     CommandLineRunner commandLineRunnerUserDetailsService(AccountService accountService) {
         return args -> {
             accountService.addNewRole("USER");
